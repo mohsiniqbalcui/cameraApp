@@ -160,6 +160,7 @@ class MainActivity : AppCompatActivity() {
 
                 } catch (e: Exception) {
                     Log.w("CameraX", "Focus control failed: ${e.message}")
+
                 }
             }
 
@@ -227,6 +228,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getTimestamp(): String {
+
         return SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(System.currentTimeMillis())
     }
 
