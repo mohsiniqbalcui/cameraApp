@@ -1,26 +1,26 @@
 package com.example.cameraapp
 
-import android.os.Bundle
-import com.google.android.material.snackbar.Snackbar
-import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.navigateUp
-import androidx.navigation.ui.setupActionBarWithNavController
-import android.view.Menu
-import android.view.MenuItem
-import com.example.cameraapp.databinding.ActivityMainBinding
-
 import android.Manifest
+import android.annotation.SuppressLint
+import android.content.ContentValues
 import android.content.pm.PackageManager
 import android.os.Build
+import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
 import android.view.MotionEvent
 import android.widget.ImageButton
 import android.widget.SeekBar
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.camera.core.*
+import androidx.appcompat.app.AppCompatActivity
+import androidx.camera.core.CameraControl
+import androidx.camera.core.CameraInfo
+import androidx.camera.core.CameraSelector
+import androidx.camera.core.FocusMeteringAction
+import androidx.camera.core.ImageCapture
+import androidx.camera.core.ImageCaptureException
+import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.core.content.ContextCompat
@@ -168,6 +168,7 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private fun setupTapToFocus() {
         previewView.setOnTouchListener { _, event ->
             if (event.action == MotionEvent.ACTION_UP) {
@@ -185,16 +186,29 @@ class MainActivity : AppCompatActivity() {
     private fun takePhoto() {
         val imageCapture = imageCapture ?: return
 
-        val photoFile = File(getOutputDirectory(), "${getTimestamp()}.jpg")
+        val name = "CameraX_${System.currentTimeMillis()}.jpg"
+        val contentValues = ContentValues().apply {
+            put(MediaStore.MediaColumns.DISPLAY_NAME, name)
+            put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg")
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                put(MediaStore.MediaColumns.RELATIVE_PATH, "DCIM/CameraXApp")
+            }
+        }
 
-        val outputOptions = ImageCapture.OutputFileOptions.Builder(photoFile).build()
+        val contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+        val outputOptions = ImageCapture.OutputFileOptions.Builder(
+            contentResolver,
+            contentUri,
+            contentValues
+        ).build()
 
         imageCapture.takePicture(
             outputOptions,
             ContextCompat.getMainExecutor(this),
             object : ImageCapture.OnImageSavedCallback {
                 override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
-                    Toast.makeText(applicationContext, "Photo saved", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(applicationContext, "Photo saved to Gallery", Toast.LENGTH_SHORT)
+                        .show()
                 }
 
                 override fun onError(exception: ImageCaptureException) {
