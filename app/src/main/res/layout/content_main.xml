@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/cameraRoot"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000">
+
+    <!-- Camera Preview -->
+    <androidx.camera.view.PreviewView
+        android:id="@+id/previewView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitCenter" />
+
+    <!-- 3x3 Grid Overlay drawn programmatically -->
+    <com.example.cameraapp.GridOverlayView
+        android:id="@+id/gridOverlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="false"
+        android:focusable="false" />
+<!--
+    &lt;!&ndash; Zoom Slider &ndash;&gt;
+    <SeekBar
+        android:id="@+id/zoomSlider"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="100dp"
+        android:max="40"
+        android:progress="0"
+        android:padding="16dp" />
+
+    &lt;!&ndash; Manual Focus Slider &ndash;&gt;
+    <SeekBar
+        android:id="@+id/focusSlider"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="150dp"
+        android:max="100"
+        android:padding="16dp" />-->
+
+    <!-- Manual Focus Label and Slider -->
+    <LinearLayout
+        android:id="@+id/focusControl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="160dp"
+        android:orientation="vertical"
+        android:paddingHorizontal="16dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Focus"
+            android:textColor="#FFFFFF"
+            android:textSize="14sp"
+            android:layout_gravity="center_horizontal" />
+
+        <SeekBar
+            android:id="@+id/focusSlider"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+        android:max="100"
+        android:progress="0"
+        android:thumbTint="#FFFFFF"
+        android:progressTint="#FFFFFF" />
+    </LinearLayout>
+
+    <!-- Zoom Label and Slider -->
+    <LinearLayout
+        android:id="@+id/zoomControl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="100dp"
+        android:orientation="vertical"
+        android:paddingHorizontal="16dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Zoom"
+            android:textColor="#FFFFFF"
+            android:textSize="14sp"
+            android:layout_gravity="center_horizontal" />
+
+        <SeekBar
+            android:id="@+id/zoomSlider"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+        android:max="40"
+        android:progress="0"
+        android:thumbTint="#FFFFFF"
+        android:progressTint="#FFFFFF" />
+    </LinearLayout>
+    <!-- Capture Button -->
+    <ImageButton
+        android:id="@+id/captureButton"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="24dp"
+        android:background="@drawable/white_ring_red_center"
+        android:contentDescription="Capture photo" />
+
+</FrameLayout>
